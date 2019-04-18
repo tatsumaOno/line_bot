@@ -34,7 +34,8 @@ class LinebotController < ApplicationController
 
       hash_result = JSON.parse result
       shops = hash_result["rest"]
-      puts shops{0}
+      puts shops
+      shop = shops{0}
       url = shop["url_mobile"]
       shop_name = shop["name"]
       category = shop["category"]
