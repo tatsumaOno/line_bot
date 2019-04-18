@@ -24,11 +24,13 @@ class LinebotController < ApplicationController
     events.each { |event|
       if event.message['text'] != nil
         place = event.message['text']
-        result = `curl -X GET https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='&'format=json'&'address=#{place}`
+        result = `curl -X GET https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=cfd5d3e8f916854a281f3a186a0f23c6
+'&'format=json'&'address=#{place}`
       else
         latitude = event.message['latitude']
         longitude = event.message['longitude']
-        result = `curl -X GET https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='&'format=json'&'latitude=#{latitude}'&'longitude=#{longitude}`
+        result = `curl -X GET https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=cfd5d3e8f916854a281f3a186a0f23c6
+'&'format=json'&'latitude=#{latitude}'&'longitude=#{longitude}`
       end
 
       hash_result = JSON.parse result
