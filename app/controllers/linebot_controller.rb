@@ -22,13 +22,31 @@ class LinebotController < ApplicationController
     events = client.parse_events_from(body)
 
     events.each { |event|
+      if event.message['text'] != nil
+        place = event.message['text']
+        result = `curl -X GET https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='&'format=json'&'address=#{place}`
+      else
+        latitude = event.message['latitude']
+        longitude = event.message['longitude']
+        result = `curl -X GET https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='&'format=json'&'latitude=#{latitude}'&'longitude=#{longitude}`
+      end
+
+      hash_result = JSON.parse result
+      shops = hash_result["rest"]
+      shop = shops[0]
+      url = shop["url_mobile"]
+      shop_name = shop["name"]
+      category = shop["category"]
+
+      response = "[店名]"+shop_name + "\n"+"[カテゴリー]"+category+"\n"+url
       case event
       when Line::Bot::Event::Message
         case event.type
-        when Line::Bot::Event::MessageType::Text
+        when Line::Bot::Event::MessageType::Text,Line::Bot::Event::MessageType::Location
+
           message = {
             type: 'text',
-            text: event.message['text']
+            text: response
           }
           client.reply_message(event['replyToken'], message)
         end
