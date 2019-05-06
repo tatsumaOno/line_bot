@@ -24,6 +24,7 @@ class LinebotController < ApplicationController
     events.each { |event|
       if event.message['text'] != nil
         place = event.message['text']
+        #ここでラインで送られてきたメッセージを取得している
         result = `curl -X GET http://api.gnavi.co.jp/RestSearchAPI/20150630/?keyid=cfd5d3e8f916854a281f3a186a0f23c6'&'format=json'&'address=#{place}`
       else
         latitude = event.message['latitude']
@@ -34,7 +35,9 @@ class LinebotController < ApplicationController
 
       hash_result = JSON.parse result
       shops = hash_result["rest"]
+      #ここでお店が入った配列となる
       shop = shops.shuffle[0]
+      #ここでランダムで店を一つshopに入れている
       url = shop["url_mobile"]
       shop_name = shop["name"]
       category = shop["category"]
